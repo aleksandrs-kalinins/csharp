@@ -30,7 +30,7 @@ public class DualTaskService : BackgroundService
         }
         catch (OperationCanceledException ex)
         {
-            Console.WriteLine(">>> Task cancelled <<<");
+            Console.WriteLine($">>> Task cancelled <<< {ex.Message}");
         }
     }
 
