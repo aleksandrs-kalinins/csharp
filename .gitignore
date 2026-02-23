@@ -1,2 +1,4 @@
-ConcurrentApi/bin/*
-ConcurrentApi/obj/*
+bin/
+obj/
+.vscode/
+
