@@ -1,0 +1,6 @@
+@ConcurrentApi_HostAddress = http://localhost:5150
+
+GET {{ConcurrentApi_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

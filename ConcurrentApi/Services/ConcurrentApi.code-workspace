@@ -1,0 +1,13 @@
+{
+	"folders": [
+		{
+			"name": "ConcurrentApi",
+			"path": ".."
+		},
+		{
+			"name": "Services",
+			"path": "."
+		}
+	],
+	"settings": {}
+}

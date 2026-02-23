@@ -1,0 +1,14 @@
+/Users/aleksandrkalinin/Documents/DEV/csharp/HelloCSharp/bin/Debug/net8.0/HelloCSharp
+/Users/aleksandrkalinin/Documents/DEV/csharp/HelloCSharp/bin/Debug/net8.0/HelloCSharp.deps.json
+/Users/aleksandrkalinin/Documents/DEV/csharp/HelloCSharp/bin/Debug/net8.0/HelloCSharp.runtimeconfig.json
+/Users/aleksandrkalinin/Documents/DEV/csharp/HelloCSharp/bin/Debug/net8.0/HelloCSharp.dll
+/Users/aleksandrkalinin/Documents/DEV/csharp/HelloCSharp/bin/Debug/net8.0/HelloCSharp.pdb
+/Users/aleksandrkalinin/Documents/DEV/csharp/HelloCSharp/obj/Debug/net8.0/HelloCSharp.GeneratedMSBuildEditorConfig.editorconfig
+/Users/aleksandrkalinin/Documents/DEV/csharp/HelloCSharp/obj/Debug/net8.0/HelloCSharp.AssemblyInfoInputs.cache
+/Users/aleksandrkalinin/Documents/DEV/csharp/HelloCSharp/obj/Debug/net8.0/HelloCSharp.AssemblyInfo.cs
+/Users/aleksandrkalinin/Documents/DEV/csharp/HelloCSharp/obj/Debug/net8.0/HelloCSharp.csproj.CoreCompileInputs.cache
+/Users/aleksandrkalinin/Documents/DEV/csharp/HelloCSharp/obj/Debug/net8.0/HelloCSharp.dll
+/Users/aleksandrkalinin/Documents/DEV/csharp/HelloCSharp/obj/Debug/net8.0/refint/HelloCSharp.dll
+/Users/aleksandrkalinin/Documents/DEV/csharp/HelloCSharp/obj/Debug/net8.0/HelloCSharp.pdb
+/Users/aleksandrkalinin/Documents/DEV/csharp/HelloCSharp/obj/Debug/net8.0/HelloCSharp.genruntimeconfig.cache
+/Users/aleksandrkalinin/Documents/DEV/csharp/HelloCSharp/obj/Debug/net8.0/ref/HelloCSharp.dll
