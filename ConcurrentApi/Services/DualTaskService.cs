@@ -10,6 +10,7 @@ public class DualTaskService : BackgroundService
     public DualTaskService(ILogger<DualTaskService> logger)
     {
         _logger = logger;
+        Console.WriteLine("DualTaskService CONSTRUCTOR");
     }
 
     protected override async Task ExecuteAsync(CancellationToken stoppingToken)

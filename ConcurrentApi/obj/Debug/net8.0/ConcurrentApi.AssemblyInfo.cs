@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("ConcurrentApi")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+cdb936cc00bd90375c7dfc9b90c4a5eae184a17e")]
 [assembly: System.Reflection.AssemblyProductAttribute("ConcurrentApi")]
 [assembly: System.Reflection.AssemblyTitleAttribute("ConcurrentApi")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
