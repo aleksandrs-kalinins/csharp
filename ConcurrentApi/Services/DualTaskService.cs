@@ -1,8 +1,3 @@
-using System.Diagnostics;
-using System.Reflection.Metadata.Ecma335;
-using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
-
 namespace ConcurrentApi.Services;
 
 public class DualTaskService : BackgroundService
