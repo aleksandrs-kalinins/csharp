@@ -1,3 +1,5 @@
+using System.Diagnostics;
+using System.Reflection.Metadata.Ecma335;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 
@@ -6,6 +8,8 @@ namespace ConcurrentApi.Services;
 public class DualTaskService : BackgroundService
 {
     private readonly ILogger<DualTaskService> _logger;
+    private CancellationTokenSource? _cts;
+    private Task? _runningTask;
 
     public DualTaskService(ILogger<DualTaskService> logger)
     {
@@ -13,47 +17,71 @@ public class DualTaskService : BackgroundService
         Console.WriteLine("DualTaskService CONSTRUCTOR");
     }
 
-    protected override async Task ExecuteAsync(CancellationToken stoppingToken)
+    public void StartWork(CancellationToken stoppingToken)
     {
-        stoppingToken.Register(() =>
-        Console.WriteLine(">>> Cancellation token triggered <<<"));
+        if (_runningTask != null && !_runningTask.IsCompleted)
+        {
+            _logger.LogInformation("Tasks already running");
+            return;
+        }
 
-        Console.WriteLine(">>> DualTaskService STARTED <<<");
+        _logger.LogInformation("Starting tasks");
+
+        _cts = CancellationTokenSource.CreateLinkedTokenSource(stoppingToken);
+        _runningTask = RunAsync(_cts.Token);
+    }
+
+    private async Task RunAsync(CancellationToken token)
+    {
+        var t1 = Task1Async(token);
+        var t2 = Task2Async(token);
+
+        await Task.WhenAll(t1, t2);
+    }
+
+    private async Task Task1Async(CancellationToken token)
+    {
+        while (!token.IsCancellationRequested)
+        {
+            Console.WriteLine("Task 1 running");
+            await Task.Delay(2000, token);
+        }
+    }
+
+    private async Task Task2Async(CancellationToken token)
+    {
+        while (!token.IsCancellationRequested)
+        {
+            Console.WriteLine("Task 2 running");
+            await Task.Delay(3000, token);
+        }
+    }
+
+    public async Task StopWorkAsync()
+    {
+        if (_cts == null)
+            return;
+
+        _logger.LogInformation("Stopping tasks");
+
+        _cts.Cancel();
 
         try
         {
-
-            var task1 = RunTask1Async(stoppingToken);
-            var task2 = RunTask2Async(stoppingToken);
-
-            await Task.WhenAll(task1, task2);
+            if (_runningTask != null)
+                await _runningTask;
         }
-        catch (OperationCanceledException ex)
+        catch (OperationCanceledException)
         {
-            Console.WriteLine($">>> Task cancelled <<< {ex.Message}");
+            _logger.LogInformation("Tasks cancelled");
         }
     }
 
-    private async Task RunTask1Async(CancellationToken token)
+    protected override Task ExecuteAsync(CancellationToken stoppingToken)
     {
-        Console.WriteLine("Task 1 starting");
-        while (!token.IsCancellationRequested)
-        {
-            _logger.LogInformation("Task 1 running");
-            await Task.Delay(2000, token);
-        }
-        Console.WriteLine("Task 1 finished");
-    }
-
-    private async Task RunTask2Async(CancellationToken token)
-    {
-        Console.WriteLine("Task 2 starting");
-        while (!token.IsCancellationRequested)
-        {
-            _logger.LogInformation("Task 2 running");
-            await Task.Delay(3000, token);
-        }
-        Console.WriteLine("Task 2 finished");
+        Console.WriteLine("Starting ExecuteAsync...");
+        StartWork(stoppingToken);
+        return Task.CompletedTask;
 
     }
 }

@@ -8,8 +8,11 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddSingleton<DualTaskService>();
 builder.Services.AddHostedService(sp => sp.GetRequiredService<DualTaskService>());
-
+builder.Services.AddControllers();
 var app = builder.Build();
+app.MapControllers();
+
+Console.WriteLine($"ENV = {builder.Environment.EnvironmentName}");
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
@@ -18,7 +21,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-app.UseHttpsRedirection();
+//app.UseHttpsRedirection();
 
 var summaries = new[]
 {
