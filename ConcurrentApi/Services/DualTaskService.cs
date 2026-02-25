@@ -1,6 +1,6 @@
 namespace ConcurrentApi.Services;
 
-public class DualTaskService : BackgroundService
+public class DualTaskService : BackgroundService, IDualTaskService
 {
     private readonly ILogger<DualTaskService> _logger;
     private CancellationTokenSource? _cts;

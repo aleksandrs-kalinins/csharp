@@ -6,8 +6,9 @@ var builder = WebApplication.CreateBuilder(args);
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+builder.Services.AddSingleton<IDualTaskService,DualTaskService>();
 builder.Services.AddSingleton<DualTaskService>();
-builder.Services.AddHostedService(sp => sp.GetRequiredService<DualTaskService>());
+//builder.Services.AddHostedService(sp => sp.GetRequiredService<DualTaskService>());
 builder.Services.AddControllers();
 var app = builder.Build();
 app.MapControllers();
