@@ -27,6 +27,7 @@ namespace ConcurrentApi.Services
             _signal.Release();
         }
 
+        //might be usefule for debugging or UI
         public bool IsRunning => _running;
     }
 }
