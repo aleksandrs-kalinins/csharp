@@ -7,9 +7,9 @@ namespace ConcurrentApi.Controllers;
 [Route("api/control")]
 public class ControlController : ControllerBase
 {
-    private readonly DualTaskService _service;
+    private readonly IDualTaskService _service;
 
-    public ControlController(DualTaskService service)
+    public ControlController(IDualTaskService service)
     {
         _service = service;
     }

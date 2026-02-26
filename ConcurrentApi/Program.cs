@@ -2,16 +2,16 @@ using ConcurrentApi.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+// Swagger/OpenAPI configuration
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
-builder.Services.AddSingleton<IDualTaskService,DualTaskService>();
-builder.Services.AddSingleton<DualTaskService>();
-builder.Services.AddControllers();
-var app = builder.Build();
-app.MapControllers();
 
+// Concurrency services
+builder.Services.AddSingleton<WorkQueue>();
+builder.Services.AddSingleton<ProcessingController>();
+builder.Services.AddHostedService<BackgroundWorker>();
+
+var app = builder.Build();
 Console.WriteLine($"ENV = {builder.Environment.EnvironmentName}");
 
 // Configure the HTTP request pipeline.
@@ -19,33 +19,43 @@ if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
+
+    app.Lifetime.ApplicationStarted.Register(async () =>
+    {
+        using var scope = app.Services.CreateScope();
+        var queue = scope.ServiceProvider.GetRequiredService<WorkQueue>();
+
+        for (int i = 0; i < 10; i++)
+        {
+            await queue.EnqueueAsync(CancellationToken.None);
+        }
+    });
 }
 
-//app.UseHttpsRedirection();
-
-var summaries = new[]
+// ---- API endpoints ----
+app.MapPost("/enqueue", async (WorkQueue queue, CancellationToken ct) =>
 {
-    "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
-};
+    await queue.EnqueueAsync(ct);
+    return Results.Accepted();
+});
 
-app.MapGet("/weatherforecast", () =>
+app.MapGet("/stats", (WorkQueue queue) =>
 {
-    var forecast = Enumerable.Range(1, 5).Select(index =>
-        new WeatherForecast
-        (
-            DateOnly.FromDateTime(DateTime.Now.AddDays(index)),
-            Random.Shared.Next(-20, 55),
-            summaries[Random.Shared.Next(summaries.Length)]
-        ))
-        .ToArray();
-    return forecast;
-})
-.WithName("GetWeatherForecast")
-.WithOpenApi();
+    return Results.Ok(queue.GetStats());
+});
+
+app.MapGet("/health", () => Results.Ok("Healthy"));
+
+app.MapPost("/start", (ProcessingController ctrl) =>
+{
+    ctrl.Start();
+    return Results.Ok("Resumed");
+});
+
+app.MapPost("/stop", (ProcessingController ctrl) =>
+{
+    ctrl.Stop();
+    return Results.Ok("Paused");
+});
 
 app.Run();
-
-record WeatherForecast(DateOnly Date, int TemperatureC, string? Summary)
-{
-    public int TemperatureF => 32 + (int)(TemperatureC / 0.5556);
-}
